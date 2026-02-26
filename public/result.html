@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result</title>
-    <link rel="stylesheet" href="style.css">
+<title>Result</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h2>Exam Result</h2>
-
 <h3 id="result"></h3>
+
+<h3>Leaderboard</h3>
+<div id="rank"></div>
 
 <script>
 
@@ -17,6 +19,15 @@ let total = localStorage.getItem("total");
 
 document.getElementById("result").innerHTML =
 "Your Score: " + score + " / " + total;
+
+let board = JSON.parse(localStorage.getItem("leaderboard"));
+
+let html="";
+board.forEach((p,index)=>{
+html += `<p>${index+1}. ${p.name} - ${p.score}</p>`;
+});
+
+document.getElementById("rank").innerHTML = html;
 
 </script>
 
