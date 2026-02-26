@@ -6,25 +6,46 @@
 </head>
 <body>
 
+<div class="container">
+
 <h2>Exam Result</h2>
+
 <h3 id="result"></h3>
 
 <h3>Leaderboard</h3>
 <div id="rank"></div>
+
+<a href="index.html">
+<button>Back to Home</button>
+</a>
+
+</div>
 
 <script>
 
 let score = localStorage.getItem("score");
 let total = localStorage.getItem("total");
 
+let percentage = ((score/total)*100).toFixed(2);
+
 document.getElementById("result").innerHTML =
-"Your Score: " + score + " / " + total;
+"Your Score: " + score + " / " + total + 
+"<br>Percentage: " + percentage + "%";
 
 let board = JSON.parse(localStorage.getItem("leaderboard"));
 
 let html="";
+
 board.forEach((p,index)=>{
-html += `<p>${index+1}. ${p.name} - ${p.score}</p>`;
+
+let medal = "";
+if(index==0) medal="🥇";
+if(index==1) medal="🥈";
+if(index==2) medal="🥉";
+
+html += `<div class="rank-card">
+${medal} ${index+1}. ${p.name} - ${p.score}
+</div>`;
 });
 
 document.getElementById("rank").innerHTML = html;
