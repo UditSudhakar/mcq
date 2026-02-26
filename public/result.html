@@ -1,51 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Result</title>
+<title>Exam Result</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
 
-<h2>Exam Result</h2>
+<h2>🎯 Exam Result</h2>
 
-<h3 id="result"></h3>
+<div class="result-highlight" id="resultBox"></div>
 
-<h3>Leaderboard</h3>
+<h3>🏆 Leaderboard</h3>
 <div id="rank"></div>
 
+<br>
 <a href="index.html">
-<button>Back to Home</button>
+<button>🏠 Back to Home</button>
 </a>
 
 </div>
 
 <script>
 
-let score = localStorage.getItem("score");
-let total = localStorage.getItem("total");
+let score = parseInt(localStorage.getItem("score"));
+let total = parseInt(localStorage.getItem("total"));
+let board = JSON.parse(localStorage.getItem("leaderboard"));
 
 let percentage = ((score/total)*100).toFixed(2);
 
-document.getElementById("result").innerHTML =
-"Your Score: " + score + " / " + total + 
-"<br>Percentage: " + percentage + "%";
+let performance = "";
 
-let board = JSON.parse(localStorage.getItem("leaderboard"));
+if(percentage >= 80){
+performance = "🌟 Excellent Performance!";
+}
+else if(percentage >= 50){
+performance = "👍 Good Job!";
+}
+else{
+performance = "📘 Keep Practicing!";
+}
+
+document.getElementById("resultBox").innerHTML = `
+Score: ${score} / ${total} <br>
+Percentage: ${percentage}% <br><br>
+${performance}
+`;
+
+/* Leaderboard */
 
 let html="";
 
 board.forEach((p,index)=>{
 
-let medal = "";
+let medal="";
 if(index==0) medal="🥇";
 if(index==1) medal="🥈";
 if(index==2) medal="🥉";
 
-html += `<div class="rank-card">
-${medal} ${index+1}. ${p.name} - ${p.score}
-</div>`;
+html += `
+<div class="rank-card">
+${medal} ${index+1}. ${p.name} — ${p.score} Marks
+</div>
+`;
 });
 
 document.getElementById("rank").innerHTML = html;
