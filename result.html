@@ -1,19 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Result</title>
-  <link rel="stylesheet" href="style.css">
+<title>Exam</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Exam Result</h2>
-<h3 id="result"></h3>
+<h2>MCQ Exam</h2>
+
+<form id="examForm">
+<p>Enter Your Name:</p>
+<input type="text" name="name" required><br><br>
+</form>
+
+<button onclick="submitExam()">Submit Exam</button>
 
 <script>
-let score = localStorage.getItem("score");
-let total = localStorage.getItem("total");
-document.getElementById("result").innerHTML =
-"Your Score: " + score + " / " + total;
+
+fetch("/questions")
+.then(res => res.json())
+.then(data => {
+
+let form = document.getElementById("examForm");
+
+data.forEach(q=>{
+form.innerHTML += `
+<h4>${q.unit}</h4>
+<p><b>${q.question}</b></p>
+${q.options.map(opt =>
+`<input type="radio" name="q${q.id}" value="${opt}" required> ${opt}<br>`
+).join("")}
+<hr>
+`;
+});
+});
+
+function submitExam(){
+
+let form = document.getElementById("examForm");
+let formData = new FormData(form);
+
+fetch("/submit",{
+method:"POST",
+body:new URLSearchParams(formData)
+})
+.then(res=>res.json())
+.then(data=>{
+localStorage.setItem("score",data.score);
+localStorage.setItem("total",data.total);
+localStorage.setItem("leaderboard",JSON.stringify(data.leaderboard));
+window.location="loading.html";
+});
+}
+
 </script>
 
 </body>
