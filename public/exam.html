@@ -1,41 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Exam</title>
+<title>MCQ Exam</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>MCQ Exam</h2>
+<div class="container">
+
+<h2>Online MCQ Exam</h2>
+
+<div class="top-bar">
+<div id="timer">Time Left: 300</div>
+<div class="progress-bar">
+<div id="progress"></div>
+</div>
+</div>
 
 <form id="examForm">
+
 <p>Enter Your Name:</p>
 <input type="text" name="name" required><br><br>
+
 </form>
 
 <button onclick="submitExam()">Submit Exam</button>
 
+</div>
+
 <script>
+
+let totalQuestions = 0;
+let answered = 0;
+let time = 300;
+
+let countdown = setInterval(function(){
+time--;
+document.getElementById("timer").innerText = "Time Left: " + time + " sec";
+
+if(time <= 0){
+clearInterval(countdown);
+submitExam();
+}
+},1000);
 
 fetch("/questions")
 .then(res => res.json())
 .then(data => {
 
+totalQuestions = data.length;
+
 let form = document.getElementById("examForm");
 
-data.forEach(q=>{
+data.forEach((q,index)=>{
+
 form.innerHTML += `
+<div class="question-card">
 <h4>${q.unit}</h4>
-<p><b>${q.question}</b></p>
+<p><b>${index+1}. ${q.question}</b></p>
 ${q.options.map(opt =>
-`<input type="radio" name="q${q.id}" value="${opt}" required> ${opt}<br>`
+`<label>
+<input type="radio" name="q${q.id}" value="${opt}" onclick="updateProgress()"> ${opt}
+</label><br>`
 ).join("")}
-<hr>
+</div>
 `;
 });
+
 });
 
+function updateProgress(){
+answered = document.querySelectorAll("input[type=radio]:checked").length;
+let percent = (answered/totalQuestions)*100;
+document.getElementById("progress").style.width = percent + "%";
+}
+
 function submitExam(){
+
+clearInterval(countdown);
 
 let form = document.getElementById("examForm");
 let formData = new FormData(form);
@@ -57,3 +99,4 @@ window.location="loading.html";
 
 </body>
 </html>
+
