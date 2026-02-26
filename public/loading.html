@@ -5,13 +5,23 @@
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="startLoading()" style="text-align:center;">
+<body onload="startLoading()">
 
-<h2>Submitting Answers... Please Wait</h2>
+<div class="container">
+
+<h2>✨ Processing Your Exam ✨</h2>
 
 <div class="spinner"></div>
 
 <h3 id="msg"></h3>
+
+</div>
+
+<!-- Floating bubbles -->
+<div class="bubble" style="left:10%;animation-duration:18s;"></div>
+<div class="bubble" style="left:40%;animation-duration:12s;"></div>
+<div class="bubble" style="left:70%;animation-duration:20s;"></div>
+<div class="bubble" style="left:85%;animation-duration:16s;"></div>
 
 <script>
 
@@ -20,20 +30,21 @@ function startLoading(){
 var messages=[
 "Consulting Elon Musk...",
 "Hacking NASA for Data...",
-"Calling Stephen Hawking...",
-"99 Missed Calls from Sundar Pichai..."
+"Calculating Your Intelligence...",
+"Preparing Rank List...",
+"Almost Done..."
 ];
 
 var i=0;
 
 function show(){
-    if(i<messages.length){
-        document.getElementById("msg").innerHTML=messages[i];
-        i++;
-        setTimeout(show,2000);
-    }else{
-        window.location="result.html";
-    }
+if(i<messages.length){
+document.getElementById("msg").innerText=messages[i];
+i++;
+setTimeout(show,2000);
+}else{
+window.location="result.html";
+}
 }
 show();
 }
@@ -42,4 +53,3 @@ show();
 
 </body>
 </html>
-
