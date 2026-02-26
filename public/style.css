@@ -1,28 +1,91 @@
 body{
-    font-family: Arial;
-    padding:20px;
-    text-align:center;
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg,#667eea,#764ba2);
+margin:0;
+padding:0;
+text-align:center;
+color:white;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+padding:20px;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+.top-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+#timer{
+background:#ff4b5c;
+padding:10px 15px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.progress-bar{
+width:60%;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+}
+
+#progress{
+height:10px;
+width:0%;
+background:#00ff99;
+transition:width 0.3s;
+}
+
+.question-card{
+background:white;
+color:black;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+text-align:left;
 }
 
 button{
-    padding:10px 20px;
-    background:#764ba2;
-    color:white;
-    border:none;
-    cursor:pointer;
+padding:10px 20px;
+background:#00ff99;
+border:none;
+color:black;
+font-weight:bold;
+border-radius:20px;
+cursor:pointer;
+margin-top:15px;
 }
 
-.spinner{
-    margin:20px auto;
-    border:8px solid #f3f3f3;
-    border-top:8px solid #764ba2;
-    border-radius:50%;
-    width:60px;
-    height:60px;
-    animation:spin 1s linear infinite;
+button:hover{
+background:#00cc77;
 }
 
-@keyframes spin{
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
+.rank-card{
+background:white;
+color:black;
+padding:10px;
+margin:10px;
+border-radius:10px;
+font-weight:bold;
+}
+
+input[type="text"]{
+padding:8px;
+width:200px;
+border-radius:10px;
+border:none;
+}
+
+label{
+cursor:pointer;
 }
