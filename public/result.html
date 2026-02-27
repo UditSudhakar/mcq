@@ -3,17 +3,27 @@
 <head>
 <title>Result</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+</style>
+
 </head>
 <body>
 
-<div class="container">
+<div class="container" style="max-width:600px; text-align:center;">
 
-<h2 style="text-align:center;">🎉 Your Exam Result 🎉</h2>
+<h2>🎉 Your Exam Result 🎉</h2>
 
-<div class="result-box" style="margin-top:25px;">
+<div style="margin-top:25px; font-size:20px;">
 
-<p id="scoreText" style="font-size:20px;"></p>
-<p id="percentageText" style="font-size:20px;"></p>
+<p id="scoreText"></p>
+<p id="percentageText"></p>
 
 <p id="message" style="margin-top:15px; font-weight:600;"></p>
 
@@ -31,9 +41,9 @@
 
 <script>
 
-let score = localStorage.getItem("score");
-let total = localStorage.getItem("total");
-let leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
+let score = parseInt(localStorage.getItem("score")) || 0;
+let total = parseInt(localStorage.getItem("total")) || 25;
+let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
 
 let percent = ((score/total)*100).toFixed(2);
 
@@ -53,7 +63,6 @@ else{
 document.getElementById("message").innerHTML = "📘 Keep Practicing!";
 }
 
-/* Leaderboard */
 let board = document.getElementById("leaderboard");
 
 leaderboard.forEach((user,index)=>{
