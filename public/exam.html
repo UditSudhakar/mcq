@@ -19,10 +19,7 @@
 </div>
 
 <form id="examForm">
-
-<p><b>Enter Your Name:</b></p>
-<input type="text" name="name" required><br><br>
-
+<!-- Name field removed -->
 </form>
 
 <button onclick="submitExam()">Submit Exam</button>
@@ -99,6 +96,10 @@ clearInterval(countdown);
 
 let form = document.getElementById("examForm");
 let formData = new FormData(form);
+
+/* 🔥 Name from index.html */
+let studentName = localStorage.getItem("studentName") || "Unknown";
+formData.append("name", studentName);
 
 fetch("/submit",{
 method:"POST",
