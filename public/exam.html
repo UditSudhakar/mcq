@@ -8,10 +8,10 @@
 
 <div class="container">
 
-<h2>Online MCQ Exam</h2>
+<h2>Online MCQ Examination</h2>
 
 <div class="top-bar">
-<div id="timer">Time Left: 300</div>
+<div id="timer">Time Left: 300 sec</div>
 <div class="progress-bar">
 <div id="progress"></div>
 </div>
@@ -19,7 +19,7 @@
 
 <form id="examForm">
 
-<p>Enter Your Name:</p>
+<p><b>Enter Your Name:</b></p>
 <input type="text" name="name" required><br><br>
 
 </form>
@@ -34,6 +34,7 @@ let totalQuestions = 0;
 let answered = 0;
 let time = 300;
 
+/* TIMER */
 let countdown = setInterval(function(){
 time--;
 document.getElementById("timer").innerText = "Time Left: " + time + " sec";
@@ -44,6 +45,7 @@ submitExam();
 }
 },1000);
 
+/* LOAD QUESTIONS */
 fetch("/questions")
 .then(res => res.json())
 .then(data => {
@@ -52,11 +54,23 @@ totalQuestions = data.length;
 
 let form = document.getElementById("examForm");
 
+let currentUnit = "";
+
 data.forEach((q,index)=>{
+
+// UNIT change check
+if(q.unit !== currentUnit){
+currentUnit = q.unit;
+
+form.innerHTML += `
+<div class="unit-title">
+${currentUnit}
+</div>
+`;
+}
 
 form.innerHTML += `
 <div class="question-card">
-<h4>${q.unit}</h4>
 <p><b>${index+1}. ${q.question}</b></p>
 ${q.options.map(opt =>
 `<label>
@@ -65,16 +79,19 @@ ${q.options.map(opt =>
 ).join("")}
 </div>
 `;
-});
 
 });
 
+});
+
+/* PROGRESS */
 function updateProgress(){
 answered = document.querySelectorAll("input[type=radio]:checked").length;
 let percent = (answered/totalQuestions)*100;
 document.getElementById("progress").style.width = percent + "%";
 }
 
+/* SUBMIT */
 function submitExam(){
 
 clearInterval(countdown);
@@ -99,4 +116,3 @@ window.location="loading.html";
 
 </body>
 </html>
-
