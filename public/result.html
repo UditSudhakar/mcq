@@ -1,78 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Exam Result</title>
+<title>Result</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
 
-<h2>🎉 Your Exam Result 🎉</h2>
+<h2 style="text-align:center;">🎉 Your Exam Result 🎉</h2>
 
-<div class="result-highlight" id="resultBox"></div>
+<div class="result-box" style="margin-top:25px;">
 
-<h3>🏆 Leaderboard</h3>
-<div id="rank"></div>
+<p id="scoreText" style="font-size:20px;"></p>
+<p id="percentageText" style="font-size:20px;"></p>
 
-<br>
-<a href="index.html">
-<button>🏠 Back to Home</button>
-</a>
+<p id="message" style="margin-top:15px; font-weight:600;"></p>
 
 </div>
 
-<!-- Floating bubbles -->
-<div class="bubble" style="left:15%;animation-duration:18s;"></div>
-<div class="bubble" style="left:35%;animation-duration:14s;"></div>
-<div class="bubble" style="left:60%;animation-duration:20s;"></div>
-<div class="bubble" style="left:85%;animation-duration:16s;"></div>
+<hr style="margin:30px 0;">
+
+<h3>🏆 Leaderboard</h3>
+
+<div id="leaderboard"></div>
+
+<button onclick="goHome()">🏠 Back to Home</button>
+
+</div>
 
 <script>
 
-let score = parseInt(localStorage.getItem("score"));
-let total = parseInt(localStorage.getItem("total"));
-let board = JSON.parse(localStorage.getItem("leaderboard"));
+let score = localStorage.getItem("score");
+let total = localStorage.getItem("total");
+let leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
 
-let percentage = ((score/total)*100).toFixed(2);
+let percent = ((score/total)*100).toFixed(2);
 
-let performance = "";
+document.getElementById("scoreText").innerHTML = 
+"<b>Score:</b> " + score + " / " + total;
 
-if(percentage >= 80){
-performance = "🌟 Excellent Performance!";
+document.getElementById("percentageText").innerHTML = 
+"<b>Percentage:</b> " + percent + "%";
+
+if(percent >= 75){
+document.getElementById("message").innerHTML = "🌟 Excellent Performance!";
 }
-else if(percentage >= 50){
-performance = "👍 Good Job!";
+else if(percent >= 40){
+document.getElementById("message").innerHTML = "👍 Good Job!";
 }
 else{
-performance = "📘 Keep Practicing!";
+document.getElementById("message").innerHTML = "📘 Keep Practicing!";
 }
 
-document.getElementById("resultBox").innerHTML = `
-<b>Score:</b> ${score} / ${total} <br>
-<b>Percentage:</b> ${percentage}% <br><br>
-${performance}
-`;
-
 /* Leaderboard */
+let board = document.getElementById("leaderboard");
 
-let html="";
-
-board.forEach((p,index)=>{
-
-let medal="";
-if(index==0) medal="🥇";
-if(index==1) medal="🥈";
-if(index==2) medal="🥉";
-
-html += `
+leaderboard.forEach((user,index)=>{
+board.innerHTML += `
 <div class="rank-card">
-${medal} ${index+1}. ${p.name} — ${p.score} Marks
+${index+1}. ${user.name} — ${user.score} Marks
 </div>
 `;
 });
 
-document.getElementById("rank").innerHTML = html;
+function goHome(){
+window.location = "index.html";
+}
 
 </script>
 
