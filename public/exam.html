@@ -8,10 +8,11 @@
 
 <div class="container">
 
-<h2>Online MCQ Examination</h2>
+<h2 style="text-align:center;">Online MCQ Examination</h2>
 
-<div class="top-bar">
+<div class="top-bar" style="display:flex; justify-content:space-between; margin-bottom:20px;">
 <div id="timer">Time Left: 300 sec</div>
+
 <div class="progress-bar">
 <div id="progress"></div>
 </div>
@@ -51,14 +52,11 @@ fetch("/questions")
 .then(data => {
 
 totalQuestions = data.length;
-
 let form = document.getElementById("examForm");
-
 let currentUnit = "";
 
 data.forEach((q,index)=>{
 
-// UNIT change check
 if(q.unit !== currentUnit){
 currentUnit = q.unit;
 
@@ -72,11 +70,14 @@ ${currentUnit}
 form.innerHTML += `
 <div class="question-card">
 <p><b>${index+1}. ${q.question}</b></p>
+
 ${q.options.map(opt =>
-`<label>
-<input type="radio" name="q${q.id}" value="${opt}" onclick="updateProgress()"> ${opt}
-</label><br>`
+`<label class="option-item">
+<input type="radio" name="q${q.id}" value="${opt}" onclick="updateProgress()">
+${opt}
+</label>`
 ).join("")}
+
 </div>
 `;
 
