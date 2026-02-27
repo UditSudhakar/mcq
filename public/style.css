@@ -11,6 +11,7 @@ body{
     animation: gradientBG 10s ease infinite;
 }
 
+/* Animated Background */
 @keyframes gradientBG {
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
@@ -19,7 +20,7 @@ body{
 
 .container{
     max-width:850px;
-    margin:50px auto;
+    margin:40px auto;
     padding:30px;
     background:rgba(255,255,255,0.15);
     backdrop-filter:blur(15px);
@@ -28,10 +29,93 @@ body{
     text-align:center;
 }
 
+/* Headings */
 h2{
     margin-bottom:20px;
 }
 
+/* Top Bar */
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+/* Timer */
+#timer{
+    background:#ff4757;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:600;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Progress Bar */
+.progress-bar{
+    width:60%;
+    background:rgba(255,255,255,0.3);
+    border-radius:30px;
+    overflow:hidden;
+    height:12px;
+}
+
+#progress{
+    height:12px;
+    width:0%;
+    background:linear-gradient(90deg,#00ffcc,#00ff99);
+    transition:width 0.4s ease;
+}
+
+/* Unit Title */
+.unit-title{
+    margin:35px 0 15px 0;
+    padding:12px;
+    font-size:22px;
+    font-weight:700;
+    text-align:center;
+    background:rgba(255,255,255,0.3);
+    border-radius:15px;
+    letter-spacing:1px;
+}
+
+/* Question Card */
+.question-card{
+    background:white;
+    color:#333;
+    padding:18px;
+    margin-bottom:18px;
+    border-radius:15px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+    text-align:left;
+    transition:transform 0.2s ease;
+}
+
+.question-card:hover{
+    transform:translateY(-3px);
+}
+
+label{
+    display:block;
+    padding:6px 0;
+    cursor:pointer;
+}
+
+input[type="radio"]{
+    margin-right:8px;
+}
+
+input[type="text"]{
+    padding:10px;
+    width:60%;
+    border-radius:20px;
+    border:none;
+    outline:none;
+    font-size:14px;
+}
+
+/* Buttons */
 button{
     padding:12px 28px;
     border:none;
@@ -41,6 +125,7 @@ button{
     background:white;
     color:#333;
     transition:0.3s ease;
+    margin-top:20px;
 }
 
 button:hover{
@@ -48,6 +133,18 @@ button:hover{
     box-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
 
+/* Result Highlight */
+.result-highlight{
+    background:white;
+    color:#333;
+    padding:15px;
+    border-radius:20px;
+    font-weight:700;
+    display:inline-block;
+    margin-bottom:20px;
+}
+
+/* Ranking Cards */
 .rank-card{
     background:white;
     color:#333;
@@ -62,18 +159,7 @@ button:hover{
     transform:translateY(-3px);
 }
 
-.result-highlight{
-    background:white;
-    color:#333;
-    padding:15px;
-    border-radius:20px;
-    font-weight:700;
-    display:inline-block;
-    margin-bottom:20px;
-}
-
 /* Spinner */
-
 .spinner{
     width:70px;
     height:70px;
@@ -90,7 +176,6 @@ button:hover{
 }
 
 /* Floating bubbles */
-
 .bubble{
     position:absolute;
     bottom:-100px;
@@ -105,4 +190,15 @@ button:hover{
     0%{transform:translateY(0);opacity:0;}
     50%{opacity:1;}
     100%{transform:translateY(-1000px);opacity:0;}
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .top-bar{
+        flex-direction:column;
+        gap:10px;
+    }
+    input[type="text"]{
+        width:90%;
+    }
 }
