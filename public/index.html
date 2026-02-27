@@ -1,11 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Online MCQ Exam Organized & Conducted by Udit Sudhakar</title>
-  <link rel="stylesheet" href="style.css">
+    <title>Online MCQ Examination</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h2>Online MCQ Examination System Organized & Conducted by Udit Sudhakar</h2>
-  <a href="exam.html">Start Exam</a>
+
+<body style="display:flex;justify-content:center;align-items:center;min-height:100vh;">
+
+<div class="container" style="max-width:650px;text-align:center;">
+
+    <h1 style="
+        font-size:38px;
+        margin-bottom:10px;
+        font-weight:700;
+        letter-spacing:1px;">
+        🚀 Online MCQ Examination System
+    </h1>
+
+    <!-- Developed By Line -->
+    <p style="
+        font-size:16px;
+        margin-bottom:30px;
+        background:linear-gradient(90deg,#ffffff,#e0e0e0);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        font-weight:600;">
+        Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫
+    </p>
+
+    <div style="
+        background:rgba(255,255,255,0.15);
+        padding:25px;
+        border-radius:20px;
+        backdrop-filter:blur(15px);
+        margin-bottom:25px;">
+
+        <h3 style="margin-bottom:15px;">Enter Your Name</h3>
+
+        <input 
+            type="text" 
+            id="username" 
+            placeholder="Your Full Name"
+            style="
+                width:80%;
+                padding:12px;
+                border:none;
+                border-radius:30px;
+                outline:none;
+                font-size:16px;
+                text-align:center;
+                margin-bottom:20px;
+            "
+        >
+
+        <br>
+
+        <button onclick="startExam()" style="
+            background:linear-gradient(90deg,#00f2fe,#4facfe);
+            color:white;
+            font-size:16px;
+            padding:12px 35px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.3);
+        ">
+            🎯 Start Exam
+        </button>
+
+    </div>
+
+    <div style="margin-top:20px;font-size:14px;opacity:0.8;">
+        ⏱ Timed Test  
+        📊 Instant Result  
+        🏆 Live Leaderboard
+    </div>
+
+</div>
+
+<script>
+function startExam(){
+    var name = document.getElementById("username").value;
+
+    if(name.trim() === ""){
+        alert("Please enter your name");
+        return;
+    }
+
+    localStorage.setItem("studentName", name);
+    window.location.href = "exam.html";
+}
+</script>
+
 </body>
 </html>
