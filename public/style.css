@@ -27,6 +27,25 @@ body{
     box-shadow:0 10px 35px rgba(0,0,0,0.4);
 }
 
+/* ===================== */
+/* LOADING SPINNER ADDED */
+/* ===================== */
+
+.spinner{
+    width:70px;
+    height:70px;
+    border:8px solid rgba(255,255,255,0.3);
+    border-top:8px solid #ffffff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:25px auto;
+}
+
+@keyframes spin{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
 /* UNIT HEADING BIG STYLE */
 .unit-title{
     margin:50px 0 25px 0;
