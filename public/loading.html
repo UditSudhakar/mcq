@@ -1,58 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Submitting...</title>
+<title>Processing</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* Extra center fix for loading page */
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+</style>
+
 </head>
+<body>
 
-<body onload="startLoading()">
-
-<div class="container">
+<div class="container" style="text-align:center; max-width:600px;">
 
 <h2>✨ Processing Your Exam ✨</h2>
 
 <div class="spinner"></div>
 
-<h3 id="msg"></h3>
+<p id="funnyText" 
+style="margin-top:25px; font-size:18px; font-weight:600; min-height:30px;">
+</p>
 
 </div>
 
-<!-- Floating bubbles -->
-<div class="bubble" style="left:10%;animation-duration:18s;"></div>
-<div class="bubble" style="left:40%;animation-duration:12s;"></div>
-<div class="bubble" style="left:70%;animation-duration:20s;"></div>
-<div class="bubble" style="left:85%;animation-duration:16s;"></div>
-
 <script>
 
-function startLoading(){
-
-var messages=[
-"Consulting Elon Musk...",
-"Hacking NASA for Data...",
-"Calculating Your Intelligence...",
-"Preparing Rank List...",
-"Calling Stephen Hawking...",
-"99 Missed Calls from Sundar Pichai...",
-"Almost Done..."
+let messages = [
+"Consulting Elon Musk... 🚀",
+"Hacking NASA for Data... 🛰️",
+"Calculating Your Intelligence... 🧠",
+"Preparing Rank List... 🏆",
+"Calling Stephen Hawking... 📡",
+"99 Missed Calls from Sundar Pichai... 📞",
+"Almost Done... ⏳"
 ];
 
-var i=0;
+let index = 0;
 
-function show(){
-if(i<messages.length){
-document.getElementById("msg").innerText=messages[i];
-i++;
-setTimeout(show,2000);
-}else{
-window.location="result.html";
+function changeMessage(){
+document.getElementById("funnyText").innerText = messages[index];
+index++;
+if(index >= messages.length){
+index = 0;
 }
 }
-show();
-}
+
+setInterval(changeMessage,900);
+changeMessage();
+
+/* Redirect after 5 sec */
+setTimeout(function(){
+window.location = "result.html";
+},5000);
 
 </script>
 
 </body>
 </html>
-
