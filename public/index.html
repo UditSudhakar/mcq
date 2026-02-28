@@ -17,7 +17,6 @@
         🚀 Online MCQ Examination System
     </h1>
 
-    <!-- Developed By Line -->
     <p style="
         font-size:16px;
         margin-bottom:30px;
@@ -35,34 +34,56 @@
         backdrop-filter:blur(15px);
         margin-bottom:25px;">
 
-        <h3 style="margin-bottom:15px;">Enter Your Name</h3>
+        <!-- LOGIN SECTION -->
+        <h3 style="margin-bottom:15px;">Login</h3>
 
-        <input 
-            type="text" 
-            id="username" 
-            placeholder="Your Full Name"
-            style="
-                width:80%;
-                padding:12px;
-                border:none;
-                border-radius:30px;
-                outline:none;
-                font-size:16px;
-                text-align:center;
-                margin-bottom:20px;
-            "
-        >
+        <input type="email" id="loginEmail" placeholder="Email"
+        style="width:80%;padding:12px;border:none;border-radius:30px;
+        outline:none;font-size:16px;text-align:center;margin-bottom:15px;">
+
+        <input type="password" id="loginPassword" placeholder="Password"
+        style="width:80%;padding:12px;border:none;border-radius:30px;
+        outline:none;font-size:16px;text-align:center;margin-bottom:20px;">
 
         <br>
 
-        <button onclick="startExam()" style="
+        <button onclick="login()" style="
             background:linear-gradient(90deg,#00f2fe,#4facfe);
             color:white;
             font-size:16px;
             padding:12px 35px;
             box-shadow:0 5px 20px rgba(0,0,0,0.3);
         ">
-            🎯 Start Exam
+            🔐 Login
+        </button>
+
+        <hr style="margin:30px 0;opacity:0.4;">
+
+        <!-- REGISTER SECTION -->
+        <h3 style="margin-bottom:15px;">Register</h3>
+
+        <input type="text" id="regName" placeholder="Full Name"
+        style="width:80%;padding:12px;border:none;border-radius:30px;
+        outline:none;font-size:16px;text-align:center;margin-bottom:15px;">
+
+        <input type="email" id="regEmail" placeholder="Email"
+        style="width:80%;padding:12px;border:none;border-radius:30px;
+        outline:none;font-size:16px;text-align:center;margin-bottom:15px;">
+
+        <input type="password" id="regPassword" placeholder="Password"
+        style="width:80%;padding:12px;border:none;border-radius:30px;
+        outline:none;font-size:16px;text-align:center;margin-bottom:20px;">
+
+        <br>
+
+        <button onclick="register()" style="
+            background:linear-gradient(90deg,#43e97b,#38f9d7);
+            color:white;
+            font-size:16px;
+            padding:12px 35px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.3);
+        ">
+            📝 Register
         </button>
 
     </div>
@@ -76,17 +97,41 @@
 </div>
 
 <script>
-function startExam(){
-    var name = document.getElementById("username").value;
 
-    if(name.trim() === ""){
-        alert("Please enter your name");
-        return;
-    }
-
-    localStorage.setItem("studentName", name);
-    window.location.href = "exam.html";
+function register(){
+    fetch("/register",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            name: document.getElementById("regName").value,
+            email: document.getElementById("regEmail").value,
+            password: document.getElementById("regPassword").value
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        alert(data.message);
+    });
 }
+
+function login(){
+    fetch("/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            email: document.getElementById("loginEmail").value,
+            password: document.getElementById("loginPassword").value
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        alert(data.message);
+        if(data.message === "Login Success"){
+            window.location = "exam.html";
+        }
+    });
+}
+
 </script>
 
 </body>

@@ -1,0 +1,12 @@
+<h2>Admin Panel</h2>
+<div id="data"></div>
+
+<script>
+fetch("/admin-data")
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("data").innerHTML=
+"<h3>Users</h3>"+JSON.stringify(data.users)+
+"<h3>Results</h3>"+JSON.stringify(data.results);
+});
+</script>
