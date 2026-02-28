@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 /* ================= DATABASE ================= */
 
-mongoose.connect(MONGO_URI=mongodb+srv://uditsudhakar:udit1234@udit.vvxf0oq.mongodb.net/mcq?retryWrites=true&w=majority)
+mongoose.connect("mongodb+srv://uditsudhakar:udit1234@udit.vvxf0oq.mongodb.net/mcq?retryWrites=true&w=majority")
 .then(()=>console.log("MongoDB Connected"))
 .catch(err=>console.log(err));
 
