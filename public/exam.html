@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MCQ Exam</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2 style="text-align:center;">Online MCQ Examination</h2>
+
+<div class="top-bar" style="display:flex; justify-content:space-between; margin-bottom:20px;">
+<div id="timer">Time Left: 300 sec</div>
+
+<div class="progress-bar">
+<div id="progress"></div>
+</div>
+</div>
+
+<form id="examForm">
+<!-- Name field removed -->
+</form>
+
+<button onclick="submitExam()">Submit Exam</button>
+
+</div>
+
+<script>
+
+let totalQuestions = 0;
+let answered = 0;
+let time = 300;
+
+/* TIMER */
+let countdown = setInterval(function(){
+time--;
+document.getElementById("timer").innerText = "Time Left: " + time + " sec";
+
+if(time <= 0){
+clearInterval(countdown);
+submitExam();
+}
+},1000);
+
+/* LOAD QUESTIONS */
+fetch("/questions")
+.then(res => res.json())
+.then(data => {
+
+totalQuestions = data.length;
+let form = document.getElementById("examForm");
+let currentUnit = "";
+
+data.forEach((q,index)=>{
+
+if(q.unit !== currentUnit){
+currentUnit = q.unit;
+
+form.innerHTML += `
+<div class="unit-title">
+${currentUnit}
+</div>
+`;
+}
+
+form.innerHTML += `
+<div class="question-card">
+<p><b>${index+1}. ${q.question}</b></p>
+
+${q.options.map(opt =>
+`<label class="option-item">
+<input type="radio" name="q${q.id}" value="${opt}" onclick="updateProgress()">
+${opt}
+</label>`
+).join("")}
+
+</div>
+`;
+
+});
+
+});
+
+/* PROGRESS */
+function updateProgress(){
+answered = document.querySelectorAll("input[type=radio]:checked").length;
+let percent = (answered/totalQuestions)*100;
+document.getElementById("progress").style.width = percent + "%";
+}
+
+/* SUBMIT */
+function submitExam(){
+
+clearInterval(countdown);
+
+let form = document.getElementById("examForm");
+let formData = new FormData(form);
+
+/* 🔥 Name from index.html */
+let studentName = localStorage.getItem("studentName") || "Unknown";
+formData.append("name", studentName);
+
+fetch("/submit",{
+method:"POST",
+body:new URLSearchParams(formData)
+})
+.then(res=>res.json())
+.then(data=>{
+localStorage.setItem("score",data.score);
+localStorage.setItem("total",data.total);
+localStorage.setItem("leaderboard",JSON.stringify(data.leaderboard));
+window.location="loading.html";
+});
+}
+
+</script>
+
+</body>
+</html>
