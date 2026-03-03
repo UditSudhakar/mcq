@@ -1,11 +1,16 @@
 {
   "name": "mcq-exam-system",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "Online MCQ Exam System with Login, Registration, Leaderboard",
+=======
+  "description": "Online MCQ Examination System",
+>>>>>>> 6e832a6d8264f4bd95934682a4767a97dda05d2e
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+<<<<<<< HEAD
   "author": "Udit",
   "license": "ISC",
   "dependencies": {
@@ -14,5 +19,9 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "pg": "^8.11.5"
+=======
+  "dependencies": {
+    "express": "^4.18.2"
+>>>>>>> 6e832a6d8264f4bd95934682a4767a97dda05d2e
   }
 }
