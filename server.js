@@ -1,149 +1,171 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 const session = require("express-session");
-const User = require("./models/User");
-const Result = require("./models/Result");
+const bcrypt = require("bcryptjs");
+const { Pool } = require("pg");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* ================= DATABASE ================= */
 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>console.log("MongoDB Connected"))
-.catch(err=>console.log(err));
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 /* ================= MIDDLEWARE ================= */
 
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave:false,
-  saveUninitialized:false
+  resave: false,
+  saveUninitialized: false
 }));
 
-/* ================= QUESTIONS ================= */
+/* ================= CHECK AUTH ================= */
 
-const questions = require("./questions.json");
-
-app.get("/questions",(req,res)=>{
-  res.json(questions);
-});
-
-/* ================= AUTH CHECK ================= */
-
-app.get("/check-auth",(req,res)=>{
-  res.json({loggedIn: !!req.session.userId});
+app.get("/check-auth", (req, res) => {
+  if (req.session.userId) {
+    res.json({ loggedIn: true, name: req.session.name });
+  } else {
+    res.json({ loggedIn: false });
+  }
 });
 
 /* ================= REGISTER ================= */
 
-app.post("/register", async (req,res)=>{
-  const {name,email,password} = req.body;
+app.post("/register", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-  if(!name || !email || !password){
-    return res.json({message:"All fields required"});
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
+
+    const check = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
+
+    if (check.rows.length > 0) {
+      return res.json({ message: "Email already exists" });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      "INSERT INTO users (name, email, password) VALUES ($1,$2,$3)",
+      [name, email, hashed]
+    );
+
+    res.json({ message: "Registered Successfully" });
+
+  } catch (err) {
+    console.error("Register Error:", err);
+    res.status(500).json({ message: "Server Error" });
   }
-
-  const existing = await User.findOne({email});
-  if(existing){
-    return res.json({message:"Email already registered"});
-  }
-
-  const hashed = await bcrypt.hash(password,10);
-
-  await new User({
-    name,
-    email,
-    password: hashed
-  }).save();
-
-  res.json({message:"Registered Successfully"});
 });
 
 /* ================= LOGIN ================= */
 
-app.post("/login", async (req,res)=>{
-  const {email,password} = req.body;
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({email});
-  if(!user){
-    return res.json({message:"Invalid Email"});
+    const user = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
+
+    if (user.rows.length === 0) {
+      return res.json({ message: "Invalid Email" });
+    }
+
+    const valid = await bcrypt.compare(
+      password,
+      user.rows[0].password
+    );
+
+    if (!valid) {
+      return res.json({ message: "Wrong Password" });
+    }
+
+    req.session.userId = user.rows[0].id;
+    req.session.name = user.rows[0].name;
+
+    res.json({ message: "Login Success" });
+
+  } catch (err) {
+    console.error("Login Error:", err);
+    res.status(500).json({ message: "Server Error" });
   }
-
-  const match = await bcrypt.compare(password,user.password);
-  if(!match){
-    return res.json({message:"Wrong Password"});
-  }
-
-  req.session.userId = user._id;
-  req.session.role = user.role;
-
-  res.json({message:"Login Success"});
 });
 
 /* ================= LOGOUT ================= */
 
-app.get("/logout",(req,res)=>{
-  req.session.destroy(()=>{
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
     res.redirect("/");
   });
 });
 
-/* ================= SUBMIT EXAM ================= */
+/* ================= LOAD QUESTIONS ================= */
 
-app.post("/submit", async (req,res)=>{
+const questions = require("./questions.json");
 
-  if(!req.session.userId){
-    return res.json({message:"Login Required"});
+app.get("/questions", (req, res) => {
+  if (!req.session.userId) {
+    return res.json({ message: "Login Required" });
   }
+  res.json(questions);
+});
 
-  let score = 0;
+/* ================= SUBMIT ================= */
 
-  questions.forEach(q=>{
-    if(req.body["q"+q.id] === q.correct){
-      score++;
+app.post("/submit", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      return res.json({ message: "Login Required" });
     }
-  });
 
-  await new Result({
-    userId: req.session.userId,
-    score,
-    total: questions.length
-  }).save();
+    let score = 0;
 
-  const leaderboardData = await Result.find()
-  .populate("userId","name")
-  .sort({score:-1});
+    questions.forEach(q => {
+      if (req.body["q" + q.id] === q.correct) {
+        score++;
+      }
+    });
 
-  const leaderboard = leaderboardData.map(r=>({
-    name: r.userId.name,
-    score: r.score
-  }));
+    await pool.query(
+      "INSERT INTO results (user_id, score, total) VALUES ($1,$2,$3)",
+      [req.session.userId, score, questions.length]
+    );
 
-  res.json({
-    score,
-    total: questions.length,
-    leaderboard
-  });
-});
+    const leaderboard = await pool.query(`
+      SELECT users.name, results.score
+      FROM results
+      JOIN users ON users.id = results.user_id
+      ORDER BY results.score DESC
+    `);
 
-/* ================= ADMIN DATA ================= */
+    res.json({
+      score,
+      total: questions.length,
+      leaderboard: leaderboard.rows
+    });
 
-app.get("/admin-data", async (req,res)=>{
-  if(req.session.role !== "admin"){
-    return res.json({message:"Unauthorized"});
+  } catch (err) {
+    console.error("Submit Error:", err);
+    res.status(500).json({ message: "Server Error" });
   }
-
-  const users = await User.find();
-  const results = await Result.find().populate("userId","name");
-
-  res.json({users,results});
 });
 
-app.listen(PORT,()=>console.log("Server Running"));
+/* ================= START SERVER ================= */
+
+app.listen(PORT, () => {
+  console.log("Server Running on port " + PORT);
+});

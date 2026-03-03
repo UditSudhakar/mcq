@@ -35,7 +35,7 @@ let time = 300;
 /* LOGIN CHECK */
 /* ========================= */
 
-fetch("/check-auth")
+fetch("/check-auth", { credentials: "include" })
 .then(res => res.json())
 .then(data=>{
 if(!data.loggedIn){
@@ -62,9 +62,15 @@ submitExam();
 /* LOAD QUESTIONS */
 /* ========================= */
 
-fetch("/questions")
+fetch("/questions", { credentials: "include" })
 .then(res => res.json())
 .then(data => {
+
+if(data.message === "Login Required"){
+alert("Please login first");
+window.location = "/";
+return;
+}
 
 totalQuestions = data.length;
 let form = document.getElementById("examForm");
@@ -123,6 +129,7 @@ let formData = new FormData(form);
 
 fetch("/submit",{
 method:"POST",
+credentials:"include",
 body:new URLSearchParams(formData)
 })
 .then(res=>res.json())
