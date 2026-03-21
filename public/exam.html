@@ -97,8 +97,8 @@ clearInterval(countdown);
 let form = document.getElementById("examForm");
 let formData = new FormData(form);
 
-/* 🔥 Name from index.html */
-let studentName = localStorage.getItem("studentName") || "Unknown";
+/* 🔥 FIXED NAME (ONLY CHANGE) */
+let studentName = localStorage.getItem("name") || "Unknown";
 formData.append("name", studentName);
 
 fetch("/submit",{

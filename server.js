@@ -121,7 +121,7 @@ app.post("/submit", async (req,res)=>{
     }
   });
 
-  const name = req.body.name || "Unknown";
+  const name = req.body.name;
   const rollno = req.body.rollno || "N/A";
 
   await pool.query(
