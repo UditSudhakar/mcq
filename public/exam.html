@@ -90,10 +90,15 @@ clearInterval(countdown);
 let form = document.getElementById("examForm");
 let formData = new FormData(form);
 
-/* 🔥 FIX */
-let studentName = localStorage.getItem("name") || "Unknown";
+/* 🔥 FIX START */
+let studentName = localStorage.getItem("studentName");
+
+if(!studentName){
+studentName = "Guest";
+}
+
 formData.append("name", studentName);
-formData.append("rollno","N/A");
+/* 🔥 FIX END */
 
 fetch("/submit",{
 method:"POST",
@@ -107,7 +112,6 @@ localStorage.setItem("leaderboard",JSON.stringify(data.leaderboard));
 window.location="loading.html";
 });
 }
-
 </script>
 
 </body>
