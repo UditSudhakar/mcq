@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Admin Dashboard</h2>
+
+<div id="leaderboard"></div>
+
+</div>
+
+<script>
+
+fetch("/admin-data")
+.then(res=>res.json())
+.then(data=>{
+
+let board = document.getElementById("leaderboard");
+
+data.forEach(user=>{
+board.innerHTML += `
+<div class="rank-card">
+${user.name} (${user.rollno}) - ${user.score}
+
+<button onclick="del(${user.id})">Delete</button>
+</div>
+`;
+});
+
+});
+
+function del(id){
+fetch("/delete/"+id,{method:"DELETE"})
+.then(()=>location.reload());
+}
+
+</script>
+
+</body>
+</html>
