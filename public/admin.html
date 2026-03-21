@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin</title>
+<title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<script>
+/* 🔒 PROTECTION */
+if(localStorage.getItem("role") !== "admin"){
+    alert("Unauthorized Access");
+    window.location = "/";
+}
+</script>
+
 <div class="container">
 
 <h2>Admin Dashboard</h2>
+
+<button onclick="logout()">Logout</button>
 
 <div id="leaderboard"></div>
 
@@ -38,6 +48,11 @@ ${user.name} (${user.rollno}) - ${user.score}
 function del(id){
 fetch("/delete/"+id,{method:"DELETE"})
 .then(()=>location.reload());
+}
+
+function logout(){
+localStorage.removeItem("role");
+window.location = "/";
 }
 
 </script>
