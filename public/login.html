@@ -1,3 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container" style="max-width:500px;text-align:center;">
+
+<h1 style="font-size:32px;">📘 Online Examination</h1>
+
+<p style="margin-bottom:25px;font-weight:600;">
+Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫
+</p>
+
+<h2 style="margin-bottom:20px;">🔐 Login</h2>
+
+<form id="loginForm">
+
+<input type="email" name="email" placeholder="📧 User/Admin ID" required
+style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
+
+<input type="password" name="password" placeholder="🔑 Password" required
+style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
+
+<button type="submit" style="
+background:linear-gradient(90deg,#00f2fe,#4facfe);
+color:white;
+padding:12px 35px;
+border:none;
+border-radius:30px;
+margin-top:15px;
+font-size:16px;">
+Login
+</button>
+
+</form>
+
+<p style="margin-top:20px;">
+New user? <a href="register.html" style="font-weight:bold;">Sign up</a>
+</p>
+
+</div>
+
 <script>
 document.getElementById("loginForm").addEventListener("submit", async function(e){
 e.preventDefault();
@@ -13,7 +59,6 @@ let data = await res.json();
 
 alert(data.message);
 
-/* 🔥 FIX */
 if(data.message === "Admin Login Success"){
     localStorage.setItem("role","admin");
     window.location = "admin.html";
@@ -21,7 +66,7 @@ if(data.message === "Admin Login Success"){
 else if(data.message === "Login Success"){
     localStorage.setItem("role","user");
 
-    /* ✅ USER NAME STORE */
+    /* 🔥 FIX: name store */
     localStorage.setItem("name", formData.get("email"));
 
     window.location = "exam.html";
@@ -31,3 +76,6 @@ else{
 }
 });
 </script>
+
+</body>
+</html>
