@@ -7,46 +7,23 @@
 
 <body>
 
-<div class="container" style="max-width:550px;text-align:center;">
+<div class="container">
 
-<h1 style="font-size:32px;">📘 Online Examination</h1>
+<h1 style="text-align:center;">Online Examination</h1>
+<p style="text-align:center;">Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫</p>
 
-<p style="margin-bottom:25px;font-weight:600;">
-Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫
-</p>
-
-<h2 style="margin-bottom:20px;">📝 Register</h2>
+<h2 style="text-align:center;">Register</h2>
 
 <form id="registerForm">
-
-<input type="text" name="name" placeholder="👤 Full Name" required
-style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
-
-<input type="email" name="email" placeholder="📧 Email ID" required
-style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
-
-<input type="text" name="rollno" placeholder="🎓 Roll No" required
-style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
-
-<input type="password" name="password" placeholder="🔑 Create Password" required
-style="width:90%;padding:12px;margin:10px;border-radius:25px;border:none;outline:none;text-align:center;">
-
-<button type="submit" style="
-background:linear-gradient(90deg,#ff7e5f,#feb47b);
-color:white;
-padding:12px 35px;
-border:none;
-border-radius:30px;
-margin-top:15px;
-font-size:16px;">
-Register
-</button>
-
+<input type="text" name="name" placeholder="Full Name" required>
+<input type="email" name="email" placeholder="Email ID" required>
+<input type="text" name="rollno" placeholder="Roll No" required>
+<input type="password" name="password" placeholder="Create Password" required>
+<button type="submit">Register</button>
 </form>
 
-<p style="margin-top:20px;">
-Already have account? 
-<a href="/" style="font-weight:bold;">🔐 Login</a>
+<p style="text-align:center;">
+Already have account? <a href="login.html">Login</a>
 </p>
 
 </div>
@@ -63,11 +40,10 @@ body:new URLSearchParams(formData)
 });
 
 let data = await res.json();
-
 alert(data.message);
 
 if(data.message === "Registered Successfully"){
-window.location = "/";
+window.location = "login.html";
 }
 });
 </script>
