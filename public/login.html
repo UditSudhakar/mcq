@@ -32,6 +32,9 @@ e.preventDefault();
 
 let formData = new FormData(this);
 
+/* 🔥 IMPORTANT FIX */
+localStorage.setItem("studentName", formData.get("email"));
+
 let res = await fetch("/login",{
 method:"POST",
 body:new URLSearchParams(formData)
