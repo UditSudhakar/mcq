@@ -1,46 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Admin</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div class="container">
-
-<h2>Admin Dashboard</h2>
-
-<div id="leaderboard"></div>
-
-</div>
-
 <script>
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+e.preventDefault();
 
-fetch("/admin-data")
-.then(res=>res.json())
-.then(data=>{
+let formData = new FormData(this);
 
-let board = document.getElementById("leaderboard");
-
-data.forEach(user=>{
-board.innerHTML += `
-<div class="rank-card">
-${user.name} (${user.rollno}) - ${user.score}
-
-<button onclick="del(${user.id})">Delete</button>
-</div>
-`;
+let res = await fetch("/login",{
+method:"POST",
+body:new URLSearchParams(formData)
 });
 
-});
+let data = await res.json();
 
-function del(id){
-fetch("/delete/"+id,{method:"DELETE"})
-.then(()=>location.reload());
+alert(data.message);
+
+/* 🔥 SAFE CHECK */
+if(data.message === "Admin Login Success"){
+    window.location = "admin.html";
 }
-
+else if(data.message === "Login Success"){
+    window.location = "exam.html";
+}
+else{
+    // ❌ kuch galat hai to kahi nahi jayega
+    console.log("Login failed");
+}
+});
 </script>
-
-</body>
-</html>
