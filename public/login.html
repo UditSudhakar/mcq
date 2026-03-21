@@ -33,7 +33,10 @@ e.preventDefault();
 let formData = new FormData(this);
 
 /* 🔥 IMPORTANT FIX */
-localStorage.setItem("studentName", formData.get("email"));
+if(data.role === "user"){
+  localStorage.setItem("studentName", data.name);
+  localStorage.setItem("rollno", data.rollno);
+}
 
 let res = await fetch("/login",{
 method:"POST",
@@ -48,9 +51,10 @@ if(data.role === "admin"){
 window.location = "admin.html";
 }
 else if(data.role === "user"){
+localStorage.setItem("studentName", data.name);
+localStorage.setItem("rollno", data.rollno);
 window.location = "exam.html";
 }
-});
 </script>
 
 </body>

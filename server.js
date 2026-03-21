@@ -99,7 +99,12 @@ app.post("/login", async (req, res) => {
     return res.json({ message:"Wrong Password" });
   }
 
-  res.json({ role:"user", message:"Login Success" });
+res.json({ 
+  role:"user", 
+  message:"Login Success",
+  name: user.rows[0].name,
+  rollno: user.rows[0].rollno
+});
 
 });
 
