@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1 style="text-align:center;">Online Examination</h1>
+
+<p style="text-align:center;margin-bottom:20px;">
+Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫
+</p>
+
+<h2 style="text-align:center;">Register</h2>
+
+<form id="registerForm">
+
+<input type="text" name="name" placeholder="Full Name" required>
+<input type="email" name="email" placeholder="Email ID" required>
+<input type="text" name="rollno" placeholder="Roll No" required>
+<input type="password" name="password" placeholder="Create Password" required>
+
+<button type="submit">Register</button>
+
+</form>
+
+<p style="text-align:center;margin-top:15px;">
+Already have account? <a href="login.html">Login</a>
+</p>
+
+</div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", async function(e){
+e.preventDefault();
+
+let formData = new FormData(this);
+
+let res = await fetch("/register",{
+method:"POST",
+body:new URLSearchParams(formData)
+});
+
+let data = await res.json();
+alert(data.message);
+
+if(data.message === "Registered Successfully"){
+window.location = "login.html";
+}
+});
+</script>
+
+</body>
+</html>
