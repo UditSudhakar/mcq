@@ -1,92 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Online MCQ Examination</title>
-    <link rel="stylesheet" href="style.css">
+<title>MCQ</title>
+<link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body style="display:flex;justify-content:center;align-items:center;min-height:100vh;">
+<div class="container">
 
-<div class="container" style="max-width:650px;text-align:center;">
+<h2>Login</h2>
+<form id="loginForm">
+<input type="email" name="email" placeholder="Email" required>
+<input type="password" name="password" placeholder="Password" required>
+<button>Login</button>
+</form>
 
-    <h1 style="
-        font-size:38px;
-        margin-bottom:10px;
-        font-weight:700;
-        letter-spacing:1px;">
-        🚀 Online MCQ Examination System
-    </h1>
+<hr>
 
-    <!-- Developed By Line -->
-    <p style="
-        font-size:16px;
-        margin-bottom:30px;
-        background:linear-gradient(90deg,#ffffff,#e0e0e0);
-        -webkit-background-clip:text;
-        -webkit-text-fill-color:transparent;
-        font-weight:600;">
-        Developed by 𝐔𝐝𝐢𝐭 𝐒𝐮𝐝𝐡𝐚𝐤𝐚𝐫
-    </p>
-
-    <div style="
-        background:rgba(255,255,255,0.15);
-        padding:25px;
-        border-radius:20px;
-        backdrop-filter:blur(15px);
-        margin-bottom:25px;">
-
-        <h3 style="margin-bottom:15px;">Enter Your Name</h3>
-
-        <input 
-            type="text" 
-            id="username" 
-            placeholder="Your Full Name"
-            style="
-                width:80%;
-                padding:12px;
-                border:none;
-                border-radius:30px;
-                outline:none;
-                font-size:16px;
-                text-align:center;
-                margin-bottom:20px;
-            "
-        >
-
-        <br>
-
-        <button onclick="startExam()" style="
-            background:linear-gradient(90deg,#00f2fe,#4facfe);
-            color:white;
-            font-size:16px;
-            padding:12px 35px;
-            box-shadow:0 5px 20px rgba(0,0,0,0.3);
-        ">
-            🎯 Start Exam
-        </button>
-
-    </div>
-
-    <div style="margin-top:20px;font-size:14px;opacity:0.8;">
-        ⏱ Timed Test  
-        📊 Instant Result  
-        🏆 Live Leaderboard
-    </div>
+<h2>Register</h2>
+<form id="registerForm">
+<input type="text" name="name" placeholder="Full Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<input type="text" name="rollno" placeholder="Roll No" required>
+<input type="password" name="password" placeholder="Password" required>
+<button>Register</button>
+</form>
 
 </div>
 
 <script>
-function startExam(){
-    var name = document.getElementById("username").value;
 
-    if(name.trim() === ""){
-        alert("Please enter your name");
-        return;
-    }
+/* LOGIN */
+document.getElementById("loginForm").addEventListener("submit", async e=>{
+e.preventDefault();
+let data = new FormData(e.target);
 
-    localStorage.setItem("studentName", name);
-    window.location.href = "exam.html";
-}
+let res = await fetch("/login",{method:"POST",body:new URLSearchParams(data)});
+let r = await res.json();
+
+alert(r.message);
+if(r.message.includes("Success")) location="exam.html";
+});
+
+/* REGISTER */
+document.getElementById("registerForm").addEventListener("submit", async e=>{
+e.preventDefault();
+let data = new FormData(e.target);
+
+let res = await fetch("/register",{method:"POST",body:new URLSearchParams(data)});
+let r = await res.json();
+
+alert(r.message);
+});
+
 </script>
 
 </body>
